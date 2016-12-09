@@ -1,5 +1,4 @@
 *.pyc
 Server/db_repository/
-filler.py
 test*
 *.db
