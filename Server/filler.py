@@ -63,7 +63,18 @@ db.session.add_all([
         punish_kind_id=1,
         person_id=1,
         order_id=1
-        )
+        ),
+    #contractKind
+    model.ContractKind(name='contract_first'),
+    model.ContractKind(name='contract_second'),
+    #contracts
+    model.Contract(
+        date=datetime.date(2013, 12, 12),
+        number=12,
+        total_sum=60000,
+        student_id=1,
+        contract_kind_id=1
+    )
 ])
 
 db.session.commit()
