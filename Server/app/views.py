@@ -36,6 +36,7 @@ def get_contract_for_person(person_id):
     contract['book_number'] = q[0].book_number
     contract['kind'] = q[2].name
     contract['number'] = q[1].number
+    contract['sum'] = q[1].total_sum
     return json.dumps({'contract': contract})
 
 @app.route('/marks/<int:person_id>', methods=['GET'])
@@ -46,6 +47,7 @@ def get_marks_for_person(person_id):
         filter(Student.id==StudentMark.student_id). \
         filter(StudentMark.mark_id==Mark.id).all()
     marks = []
+    print(q)
     for i in q:
         marks.append(MARKS[i.name])
     return json.dumps({'marks': marks})
@@ -88,30 +90,30 @@ def get_query(text):
             filter(Person.id==Student.person_id). \
             filter(Student.id==Contract.student_id). \
             filter(Contract.contract_kind_id==ContractKind.id).\
-            filter(ContractKind.name=='contract_first').all()
+            filter(ContractKind.name=='paid').all()
         persons = []
         for i in q:
             persons.append(i[0].serialize())
     elif text == '@second':
-        q = db.session.query(Person, Student). \
+        q = db.session.query(Person). \
             filter(Student.person_id==Person.id).\
             filter(Person.id==Violation.person_id).\
             filter(Violation.punish_kind_id==PunishKind.id). \
-            filter(PunishKind.name=='punish_first').all()
+            filter(PunishKind.name=='academic disqualification').all()
         persons = []
         for i in q:
-            persons.append(i[0].serialize())            
+            persons.append(i.serialize())            
     elif text == '@first':
-        q = db.session.query(Person, Student, StudentMark, Mark). \
+        q = db.session.query(Person, Mark). \
             filter(Person.id==Student.person_id).\
             filter(Student.id==StudentMark.student_id).\
             filter(StudentMark.mark_id==Mark.id).all()
         checker = []
-        for (person, student, smark, mark) in q:
+        for (person, mark) in q:
             if  mark.name != 'A':
                 checker.append(person)
         persons = []
         for i in q:
-            if (i[0]) not in checker:
+            if i[0] not in checker:
                 persons.append(i[0].serialize())
     return json.dumps({'persons': persons})
