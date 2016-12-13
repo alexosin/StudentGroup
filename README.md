@@ -3,7 +3,7 @@
 
 #Requirement
 * python=3.5
-* Others see in requirements.txt
+* Others see in [a relative link](requirements.txt)
 
 #Run
 1. Server
