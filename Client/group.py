@@ -10,6 +10,9 @@ from widgets.quitter import Quitter
 def get_students(event, text, studentList):
     r = requests.get('http://localhost:5000/query/' + str(text))
     receive = loads(r.text)
+    if receive == 'Error':
+        return messagebox.showerror(title='Query error', 
+            message='Cannot handle query.')
     studentList.fillListbox(receive['persons'])
 
 def main():
@@ -32,7 +35,9 @@ def main():
         GroupScrolledList(st, elements=j['groups'], parent=root, key=('code',), title='Groups').pack()
         ent.bind('<Shift-Up>', lambda i=ent, x=v.get(), y=st: get_students(i, v.get(), y))
     except Exception as e: 
-        messagebox.showerror(message=e)#'Cannot connect to server.')
+        messagebox.showerror(title='Connection error.', 
+            message='Server does not response. Check your connection.')
+        root.destroy()
     root.mainloop() 
 
 if __name__=='__main__':
