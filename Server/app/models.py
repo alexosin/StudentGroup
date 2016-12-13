@@ -30,8 +30,8 @@ class Person(db.Model):
             'address': self.address,
             'telephone': self.telephone
         }
-        if self.birth_place:
-            result['birth_date'] = self.birth_date
+        if self.birth_date:
+            result['birth_date'] = self.birth_date.isoformat()
         else:
             result['birth_date'] = None
         return result
