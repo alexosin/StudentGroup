@@ -21,12 +21,12 @@ class PersonWindow(Frame):
         box = Frame(firstrow, relief=RIDGE, bd=5, width=self.personal['width'])
         box.pack(side=LEFT, anchor=N, expand=YES, fill=X)
         self.makeform(box, self.contract, ['Number', 'Book Number', 
-            'Date', 'Kind'], title='Contract information')
+            'Date', 'Kind', 'Sum'], title='Contract information')
         self.contract = box
         self.bcalc = Button(self.personal, text='Calculate average mark', 
             command=self.calc, bd=4, bg='#bdc3c7')
         self.bcalc.pack(side=RIGHT, expand=YES, fill=X)
-
+        
         secondrow = Frame(self)
         secondrow.pack(side=TOP, expand=YES, fill=BOTH)
         ScrolledList(elements=self.violations, parent=secondrow, 
