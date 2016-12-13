@@ -5,6 +5,7 @@ from json import loads
 from .wpersons import PersonWindow
 from .quitter import Quitter
 from.scrolledList import ScrolledList
+from settings import SERVER
 
 class GroupScrolledList(ScrolledList):
     def __init__(self, listbox, elements=None, parent=None, key=('name', ), title=None):
@@ -16,7 +17,7 @@ class GroupScrolledList(ScrolledList):
         for i in self.elements:
             if i['code'] == label:
                 index = i['id']
-        r = requests.get('http://localhost:5000/students/' + str(index))
+        r = requests.get('{0}students/{1}'.format(SERVER, index))
         j = (loads(r.text))
         self.runCommand(j)
 

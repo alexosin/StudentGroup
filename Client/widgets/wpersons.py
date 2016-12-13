@@ -3,6 +3,7 @@ import tkinter.messagebox as messagebox
 import requests
 from json import loads
 from widgets.scrolledList import ScrolledList 
+from settings import SERVER
 
 class PersonWindow(Frame):
     def __init__(self, person, parent=None, **options):
@@ -36,11 +37,11 @@ class PersonWindow(Frame):
     def makeRequest(self):
         index = self.person['id']
         try:
-            r = requests.get('http://localhost:5000/contract/' + str(index))
+            r = requests.get('{0}contract/{1}'.format(SERVER, index))
             contract = loads(r.text)
-            r = requests.get('http://localhost:5000/marks/' + str(index))
+            r = requests.get('{0}marks/{1}'.format(SERVER, index))
             marks = loads(r.text)
-            r = requests.get('http://localhost:5000/violations/' + str(index))
+            r = requests.get('{0}violations/{1}'.format(SERVER, index))
             violations = loads(r.text)
         except Exception as e:
             messagebox.showerror(message=e)
@@ -50,7 +51,7 @@ class PersonWindow(Frame):
 
     def makeform(self, root, source, fields, title):
         Label(root, text=title, anchor='w', width=15).pack()
-        for field in fields:
+        for field in fields:             
             row = Frame(root)
             lab = Label(row, width=15, text=field, anchor='w')
             ent = Entry(row)

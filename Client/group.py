@@ -6,9 +6,10 @@ from widgets.lists import ScrolledList
 from widgets.lists import GroupScrolledList
 from widgets.lists import StudentScrolledList
 from widgets.quitter import Quitter
+from settings import SERVER
 
 def get_students(event, text, studentList):
-    r = requests.get('http://localhost:5000/query/' + str(text))
+    r = requests.get('{0}query/{1}'.format(SERVER, text))
     receive = loads(r.text)
     if receive == 'Error':
         return messagebox.showerror(title='Query error', 
@@ -22,7 +23,7 @@ def main():
     root.maxsize(100, 10)
     root.maxsize
     try:
-        r = requests.get('http://localhost:5000/groups')
+        r = requests.get('{0}groups'.format(SERVER))
         j = loads(r.text)
         options = [x['code'] for x in j['groups']]
         v = StringVar()
