@@ -2,7 +2,7 @@ from app import db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float
 from datetime import date
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, Session
 
 class Person(db.Model):
     __tablename__ = 'persons'
@@ -20,17 +20,21 @@ class Person(db.Model):
     student = relationship('Student', backref=backref('persons', uselist=False))
 
     def serialize(self):
-        return {
+        result = {
             'id': self.id,
             'surname': self.surname,
             'name': self.name,
             'patronymic': self.patronymic,
-            'birth_date': self.patronymic,
             'sex': self.sex,
             'birth_place': self.birth_place,
             'address': self.address,
             'telephone': self.telephone
         }
+        if self.birth_place:
+            result['birth_date'] = self.birth_date
+        else:
+            result['birth_date'] = None
+        return result
 
     def __repr__(self):
         return "<Person(surname %s, name %s, patronymic %s)" % (
@@ -158,7 +162,7 @@ class Order(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'date': self.date,
+            'date': self.date.isoformat(),
             'number': self.number,
             'text': self.text,
             'order_kind': self.order_kind_id
@@ -182,7 +186,7 @@ class Violation(db.Model):
     def serialize(self):
         return {
         'id': self.id,
-        'date': self.date,
+        'date': self.date.isoformat(),
         'violation_kind': self.violation_kind,
         'punish_kind': self.punish_kind_id,
         'person': self.person_id,
@@ -190,7 +194,7 @@ class Violation(db.Model):
     }
 
     def __repr__(self):
-        return "<Violation(date - %s" % (self.date)
+        return "<Violation(date - %s)>" % (self.date)
 
 class StudentGroup(db.Model):
     __tablename__ = 'student_groups'
@@ -203,7 +207,7 @@ class StudentGroup(db.Model):
     def serialize(self):
         return {
         'id': self.id,
-        'putting_date': self.putting_date,
+        'putting_date': self.putting_date.isoformat(),
         'student_id': self.student_id,
         'group_id': self.group_id
         }
@@ -260,7 +264,7 @@ class Contract(db.Model):
     def serialize(self):
         return {
         'id': self.id,
-        'date': self.date,
+        'date': self.date.isoformat(),
         'number': self.number,
         'payer_kind': self.payer_kind,
         'self.contract_kind_id': self.contract_kind_id,
