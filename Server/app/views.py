@@ -47,7 +47,6 @@ def get_marks_for_person(person_id):
         filter(Student.id==StudentMark.student_id). \
         filter(StudentMark.mark_id==Mark.id).all()
     marks = []
-    print(q)
     for i in q:
         marks.append(MARKS[i.name])
     return json.dumps({'marks': marks})
