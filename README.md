@@ -8,12 +8,12 @@
 #Run
 1. Server
  1. Create and migrate database.
-* python db_create.py 
-* python db_migrate.py
-* fill database with data
+  python db_create.py 
+  python db_migrate.py
+  fill database with data
  2. Run server in Debug mode
-* python run.py
+  python run.py
 
 2. Client
  1. Run main window 
-* python group.py
+  python group.py
