@@ -5,7 +5,8 @@ class Quitter(Frame):
     def __init__(self, parent=None):
         Frame.__init__(self, parent)
         self.pack()
-        widget = Button(self, text='Quit', command=self.quit, width=10, background='grey', bd=3)
+        widget = Button(self, text='Quit', command=self.quit, width=10, 
+            background='#bdc3c7', bd=3)
         widget.pack(side=LEFT, expand=YES, fill=BOTH)
 
     def quit(self):

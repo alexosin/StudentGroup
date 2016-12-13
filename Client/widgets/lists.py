@@ -2,50 +2,9 @@ from tkinter import *
 from tkinter.messagebox import *
 import requests
 from json import loads
-
-class ScrolledList(Frame):
-    def __init__(self, elements=None, parent=None, key=('name',), title=None):
-        Frame.__init__(self, parent)
-        self.pack(fill=BOTH, expand=YES, padx=20, pady=10)
-        self.title = title
-        self.elements = elements
-        self.key = key
-        self.makewidgets()
-        
-    def handleList(self, event):
-        label = self.listbox.get(self.listbox.curselection())
-        self.runCommand(label)
-   
-    def makewidgets(self):
-        if self.title:
-            Label(self, text=self.title).pack()
-        ybar = Scrollbar(self)
-        xbar = Scrollbar(self, orient='horizontal')
-        list = Listbox(self, relief=SUNKEN)
-        ybar.config(command=list.yview)
-        xbar.config(command=list.xview)
-        list.config(yscrollcommand=ybar.set)
-        list.config(xscrollcommand=xbar.set)
-        ybar.pack(side=RIGHT, fill=Y)
-        xbar.pack(side=BOTTOM, fill=X)
-        list.pack(expand=YES, fill=BOTH)
-        list.config(selectmode=BROWSE, setgrid=1)
-        list.bind('<Double-1>', self.handleList)
-        self.listbox = list
-        if self.elements:
-            self.fillListbox(self.elements)
-
-    def fillListbox(self, elements): 
-        self.elements = elements
-        self.listbox.delete(0, END)
-        for element in elements:
-            label = ''
-            for i in self.key:
-                label += str(element[i]) + ' '
-            label = label.rstrip()
-            self.listbox.insert(END, label)
-    def runCommand(self, selection):
-        showinfo('Selection', selection)
+from .wpersons import PersonWindow
+from .quitter import Quitter
+from.scrolledList import ScrolledList
 
 class GroupScrolledList(ScrolledList):
     def __init__(self, listbox, elements=None, parent=None, key=('name', ), title=None):
@@ -56,7 +15,6 @@ class GroupScrolledList(ScrolledList):
         label = self.listbox.get(self.listbox.curselection())
         for i in self.elements:
             if i['code'] == label:
-                print(i)
                 index = i['id']
         r = requests.get('http://localhost:5000/students/' + str(index))
         j = (loads(r.text))
@@ -68,11 +26,18 @@ class GroupScrolledList(ScrolledList):
 class StudentScrolledList(ScrolledList):
     def handleList(self, event):
         label = self.listbox.get(self.listbox.curselection())
-        self.runCommand()
+        for i in self.elements:
+            if i['name'] + ' ' + i['surname'] == label:
+                person = i
+        self.runCommand(person)
 
-    def runCommand(self):
+    def runCommand(self, person):
         window = Toplevel()
-        window.title
+        #window.minsize(500, 300)
+        #window.maxsize(500, 500)
+        PersonWindow(person, window)
+        Button(window, text='Quit', command=window.destroy, 
+            width=10, bg='#bdc3c7', bd=3).pack(side=BOTTOM, anchor=E)
 
 if __name__ == "__main__":
     root = Tk()
