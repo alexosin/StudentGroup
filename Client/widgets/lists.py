@@ -33,8 +33,8 @@ class StudentScrolledList(ScrolledList):
 
     def runCommand(self, person):
         window = Toplevel()
-        #window.minsize(500, 300)
-        #window.maxsize(500, 500)
+        window.minsize(10, 10)
+        window.maxsize(50, 50)
         PersonWindow(person, window)
         Button(window, text='Quit', command=window.destroy, 
             width=10, bg='#bdc3c7', bd=3).pack(side=BOTTOM, anchor=E)
