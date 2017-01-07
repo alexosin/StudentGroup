@@ -2,9 +2,7 @@ from tkinter import *
 import tkinter.messagebox as messagebox
 import requests
 from json import loads
-from widgets.lists import ScrolledList
-from widgets.lists import GroupScrolledList
-from widgets.lists import StudentScrolledList
+from widgets.lists import ScrolledList, GroupScrolledList, StudentScrolledList
 from widgets.quitter import Quitter
 from settings import SERVER
 
